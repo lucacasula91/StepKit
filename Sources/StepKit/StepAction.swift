@@ -1,7 +1,7 @@
 import UIKit
 
 /// Specify the behavior that guide the flow step forward.
-enum StepAction {
+enum StepAction: Codable, Equatable {
 
     /// Button object that allow to make a step forward.
     ///
