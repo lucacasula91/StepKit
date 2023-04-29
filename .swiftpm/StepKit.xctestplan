@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "D895045F-AEA5-4D89-B24E-684680B07705",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "StepKitTests",
+        "name" : "StepKitTests"
+      }
+    }
+  ],
+  "version" : 1
+}
