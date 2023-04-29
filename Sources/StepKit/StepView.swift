@@ -73,24 +73,3 @@ struct StepView_Previews: PreviewProvider {
         }
     }
 }
-
-struct TitleAndSubtitle: View {
-    var title: String
-    var subtitle: String?
-    
-    var body: some View {
-        HStack {
-            VStack(alignment: .leading) {
-                Text(title)
-                    .font(.title3)
-                    .fontWeight(.bold)
-                if let subtitle = subtitle {
-                    Text(subtitle)
-                        .font(.headline)
-                }
-            }
-            .foregroundColor(.primary)
-            Spacer()
-        }
-    }
-}
