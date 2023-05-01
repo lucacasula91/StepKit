@@ -17,6 +17,8 @@ enum StepAction: Codable, Equatable {
     /// - parameter title: The title to assign to the checkbox.
     case checkBox(title: String? = nil)
     
+    case checkBoxGroup(items: [String])
+    
     /// Timer specified in second that allow to make a step forward once the countdown is completed.
     ///
     /// Once the count down is completed the text **Completed** is shown instead of the counter.
