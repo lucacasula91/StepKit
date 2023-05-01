@@ -1,9 +1,9 @@
 import XCTest
 
 @testable import StepKit
-final class FlowViewTests: XCTestCase {
+final class StepFlowViewTests: XCTestCase {
 
-    func test_FlowView_Initialization_Json() throws {
+    func test_StepFlowView_Initialization_Json() throws {
         let jsonString = """
 [
   {
@@ -29,12 +29,12 @@ final class FlowViewTests: XCTestCase {
 ]
 """
        
-        let flowView = try FlowView(data: jsonString.data(using: .utf8)!)
-        XCTAssertNoThrow(flowView)
-        XCTAssertEqual(flowView.steps.count, 2)
+        let stepFlowView = try StepFlowView(data: jsonString.data(using: .utf8)!)
+        XCTAssertNoThrow(stepFlowView)
+        XCTAssertEqual(stepFlowView.steps.count, 2)
     }
     
-    func test_FlowView_Initialization_NotValid_Json() throws {
+    func test_StepFlowView_Initialization_NotValid_Json() throws {
         let jsonString = """
 [
   {
@@ -60,7 +60,7 @@ final class FlowViewTests: XCTestCase {
 ]
 """
        
-        XCTAssertThrowsError(try FlowView(data: jsonString.data(using: .utf8)!), "Expected to throw .invalidJsonData") { (error) in
+        XCTAssertThrowsError(try StepFlowView(data: jsonString.data(using: .utf8)!), "Expected to throw .invalidJsonData") { (error) in
             XCTAssertEqual(error as? StepKitError, StepKitError.invalidJsonData)
         }
     }

@@ -21,9 +21,9 @@ struct StepModel: Codable, Identifiable {
     }
     
     enum CodingKeys: String, CodingKey {
-        case title = "title"
-        case subtitle = "subtitle"
-        case description = "description"
-        case action = "action"
+        case title
+        case subtitle
+        case description
+        case action
     }
 }

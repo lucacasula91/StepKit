@@ -53,21 +53,25 @@ struct StepView: View {
 }
 
 struct StepView_Previews: PreviewProvider {
+
     static var previews: some View {
         let currentStepHolder = CurrentStepHolder()
-        Group {
-            let model = StepModel(title: "Step 1",
-                                  subtitle: "Add all powder ingredients",
-                                  description: "In a bowl put the flour, the salt and the yeast.\nYou can use dry or instant yeast.")
+        let model = StepModel(title: "Step 1",
+                              subtitle: "Add all powder ingredients",
+                              description: "In a bowl put the flour, the salt and the yeast.\nYou can use dry or instant yeast.")
+        
+        let model1 = StepModel(title: "Step 1",
+                               subtitle: "Add all powder ingredients",
+                               description: "In a bowl put the flour, the salt and the yeast.\nYou can use dry or instant yeast.",
+                               action: .timer(seconds: 2))
+        VStack {
             StepView(model: model)
-            
-            let model1 = StepModel(title: "Step 1",
-                                   subtitle: "Add all powder ingredients",
-                                   description: "In a bowl put the flour, the salt and the yeast.\nYou can use dry or instant yeast.",
-                                   action: .timer(seconds: 2))
             StepView(model: model1)
         }
         .preferredColorScheme(.dark)
         .environmentObject(currentStepHolder)
+        .onAppear {
+            currentStepHolder.currentStep = [model.id, model1.id]
+        }
     }
 }

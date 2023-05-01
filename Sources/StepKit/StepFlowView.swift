@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct FlowView: View {
+struct StepFlowView: View {
     var steps: [StepModel]
     @StateObject var currentStepHolder = CurrentStepHolder()
     
@@ -34,7 +34,7 @@ struct FlowView: View {
         
 }
 
-struct FlowView_Previews: PreviewProvider {
+struct StepFlowView_Previews: PreviewProvider {
     static var previews: some View {
         
         let step1 = StepModel(title: "Add all powder ingredients",
@@ -56,6 +56,6 @@ struct FlowView_Previews: PreviewProvider {
                               description: "Put the cake in a plate and add some powdered sugar on top.",
                               action: .checkBoxGroup(items: ["Plate the cake", "Add powdered sugar on top"]))
         
-        FlowView(steps: [step1, step2, step3, step4])
+        StepFlowView(steps: [step1, step2, step3, step4])
     }
 }

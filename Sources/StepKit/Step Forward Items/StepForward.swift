@@ -14,6 +14,7 @@ struct StepForward: View {
                     onCompletion()
                 }
             }
+            .padding()
             .font(.headline)
             
         case .checkBox(let title):
@@ -41,7 +42,7 @@ struct StepForward: View {
 struct ActionView_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
-            StepForward(type: .button(title: "Next")) { }
+            StepForward(type: .button(title: "Continua")) { }
             StepForward(type: .checkBox(title: "Single task")) { }
             StepForward(type: .checkBoxGroup(items: ["First item group", "Seconds item group"])) { }
 
