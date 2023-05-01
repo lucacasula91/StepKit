@@ -15,7 +15,6 @@ struct CompletedMark: View {
                     Image(systemName: "checkmark.circle.fill")
                         .foregroundColor(.green)
                 }
-                Spacer()
             }
         }
     }
