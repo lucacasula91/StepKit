@@ -2,7 +2,8 @@ import SwiftUI
 
 struct FlowView: View {
     var steps: [StepModel]
-
+    @StateObject var currentStepHolder = CurrentStepHolder()
+    
     // MARK: - Initialization Methods
     init(steps: [StepModel]) {
         self.steps = steps
@@ -24,7 +25,13 @@ struct FlowView: View {
                 Spacer(minLength: 20)
             }
         }
+        .onAppear {
+            let stepsToHold = steps.compactMap { $0.id }
+            self.currentStepHolder.currentStep = stepsToHold
+        }
+        .environmentObject(currentStepHolder)
     }
+        
 }
 
 struct FlowView_Previews: PreviewProvider {

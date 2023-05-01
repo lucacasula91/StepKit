@@ -4,6 +4,7 @@ struct StepView: View {
     var model: StepModel
     @State var isCompleted: Bool = false
     @State var isExpanded: Bool = true
+    @EnvironmentObject var currentStepHolder: CurrentStepHolder
     
     var body: some View {
         ZStack {
@@ -27,6 +28,9 @@ struct StepView: View {
                         StepForward(type: model.action) {
                             isExpanded.toggle()
                             isCompleted.toggle()
+                            if isCompleted {
+                                currentStepHolder.removeFirst()
+                            }
                         }
                     }
                     .padding(.top)
@@ -43,12 +47,14 @@ struct StepView: View {
                 }
             }
         }
+        .disabled(isCompleted ? false : currentStepHolder.currentStep.first != self.model.id)
+        .opacity(currentStepHolder.currentStep.first != self.model.id ? (isCompleted && isExpanded ? 1 : 0.4) : 1)
     }
 }
 
 struct StepView_Previews: PreviewProvider {
     static var previews: some View {
-        
+        let currentStepHolder = CurrentStepHolder()
         Group {
             let model = StepModel(title: "Step 1",
                                   subtitle: "Add all powder ingredients",
@@ -62,5 +68,6 @@ struct StepView_Previews: PreviewProvider {
             StepView(model: model1)
         }
         .preferredColorScheme(.dark)
+        .environmentObject(currentStepHolder)
     }
 }
