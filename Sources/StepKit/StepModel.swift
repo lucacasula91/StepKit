@@ -1,7 +1,8 @@
 import UIKit
 
-
-/// <#Description#>
+/// Describe the content of a specific step.
+///
+/// By default action property i setted do .button()
 struct StepModel: Codable, Identifiable {
     
     // MARK: - Public Properties
@@ -24,5 +25,5 @@ struct StepModel: Codable, Identifiable {
         case subtitle = "subtitle"
         case description = "description"
         case action = "action"
-        }
+    }
 }

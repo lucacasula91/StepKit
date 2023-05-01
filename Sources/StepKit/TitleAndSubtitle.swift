@@ -3,13 +3,19 @@ import SwiftUI
 struct TitleAndSubtitle: View {
     var title: String
     var subtitle: String?
+    var isCompleted: Bool
     
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
-                Text(title)
-                    .font(.title3)
+                HStack {
+                    Text(title)
+                        .font(.title3)
                     .fontWeight(.bold)
+                    Spacer()
+                    CompletedMark(isVisible: isCompleted)
+                        .layoutPriority(1)
+                }
                 if let subtitle = subtitle {
                     Text(subtitle)
                         .font(.headline)
@@ -24,6 +30,6 @@ struct TitleAndSubtitle: View {
 
 struct TitleAndSubtitle_Previews: PreviewProvider {
     static var previews: some View {
-        TitleAndSubtitle(title: "My Title", subtitle: "My Subtitle")
+        TitleAndSubtitle(title: "My Title", subtitle: "My Subtitle", isCompleted: true)
     }
 }

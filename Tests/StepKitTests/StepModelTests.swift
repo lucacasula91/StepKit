@@ -47,6 +47,28 @@ final class StepModelTests: XCTestCase {
         XCTAssertEqual(stepModel.action, .checkBox(title: "Mark as completed"))
     }
     
+    func test_StepModel_Codable_Init_CheckBoxGroup() throws {
+        
+        let jsonString = """
+{
+  "title": "My Title",
+  "subtitle": "My Subtitle",
+  "description": "My Description",
+  "action": {
+    "checkBoxGroup": {
+      "items": ["First item", "Second item"]
+    }
+  }
+}
+"""
+        let stepModel = try JSONDecoder().decode(StepModel.self, from: jsonString.data(using: .utf8)!)
+        XCTAssertNotNil(stepModel)
+        XCTAssertEqual(stepModel.title, "My Title")
+        XCTAssertEqual(stepModel.subtitle, "My Subtitle")
+        XCTAssertEqual(stepModel.description, "My Description")
+        XCTAssertEqual(stepModel.action, .checkBoxGroup(items: ["First item", "Second item"]))
+    }
+    
     
     func test_StepModel_Codable_Init_Timer() throws {
         
