@@ -25,5 +25,5 @@ enum StepAction: Codable, Equatable {
     /// Timer specified in second that allow to make a step forward once the countdown is completed.
     ///
     /// Once the count down is completed the text **Completed** is shown instead of the counter.
-    case timer(seconds: TimeInterval)
+    case timer(seconds: TimeInterval, notification: TimerNotification? = nil)
 }
