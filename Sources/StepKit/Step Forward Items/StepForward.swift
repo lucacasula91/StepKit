@@ -9,16 +9,18 @@ struct StepForward: View {
         
         switch type {
         case .button(let title):
-            Button(title ?? "Next") {
+            Button {
                 withAnimation {
                     onCompletion()
                 }
+            } label: {
+                Text(title)
             }
             .padding()
             .font(.headline)
             
         case .checkBox(let title):
-            CheckBox(title: title ?? "", whenCompleted: {
+            CheckBox(title: title, whenCompleted: {
                 withAnimation {
                     onCompletion()
                 }
@@ -46,7 +48,8 @@ struct StepForward: View {
 struct ActionView_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
-            StepForward(type: .button(title: "Continua")) { }
+            StepForward(type: .button()) { }
+
             StepForward(type: .checkBox(title: "Single task")) { }
             StepForward(type: .checkBoxGroup(items: ["First item group", "Seconds item group"])) { }
 
@@ -55,19 +58,3 @@ struct ActionView_Previews: PreviewProvider {
     }
 }
 
-class NotificationGenerator {
-    static func createNotificationRequest(from model: TimerNotification?,
-                                          with timeInterval: TimeInterval) -> UNNotificationRequest? {
-        guard let _model = model else { return nil }
-        
-        let content = UNMutableNotificationContent()
-        content.title = _model.title
-        content.subtitle = _model.subtitle
-        content.sound = UNNotificationSound.default
-
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: timeInterval, repeats: false)
-        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-
-        return request
-    }
-}
