@@ -7,6 +7,7 @@ import UserNotifications
 struct TimerView: View {
 
     // MARK: - Public Properties
+    @Environment(\.scenePhase) var scenePhase
     @State public var seconds: TimeInterval
     public var notificationRequest: UNNotificationRequest?
     public var whenCompleted: () -> Void
@@ -15,7 +16,8 @@ struct TimerView: View {
     @State private var isTimerActive: Bool = false
     @State private var canBeFired: Bool = true
     @State private var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-    
+    @State private var backgroundDate: Date?
+
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
@@ -60,11 +62,28 @@ struct TimerView: View {
             .disabled(canBeFired == false)
             
         }
+        .onChange(of: scenePhase) { newPhase in
+            guard self.isTimerActive else { return }
+
+            if newPhase == .active {
+                
+                let activeDate = Date()
+                let secondsOfInactivity = TimerScenePhases.getInactivitySecondsTill(activeDate: activeDate)
+                
+                if (seconds - secondsOfInactivity) > 0 {
+                    self.seconds = seconds - secondsOfInactivity
+                } else {
+                    seconds = 0
+                }
+            } else if newPhase == .background {
+                TimerScenePhases.backgroundDate = Date()
+            }
+        }
         .padding(12)
         .background(Color(UIColor.systemGray5))
         .cornerRadius(8)
     }
-    
+
     // MARK: - Private Methods
     
     /// Transform the seconds amount in a human readable count down.
