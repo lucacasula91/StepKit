@@ -1,9 +1,17 @@
 import SwiftUI
 
+
+/// Describe the UI of a specific step.
 struct StepView: View {
-    var model: StepModel
-    @State var isCompleted: Bool = false
-    @State var isExpanded: Bool = true
+    
+    // MARK: - Public Properties
+    public var model: StepModel
+
+    // MARK: - Private Properties
+    @State private var isCompleted: Bool = false
+    @State private var isExpanded: Bool = true
+    
+    // MARK: - Public Properties
     @EnvironmentObject var currentStepHolder: CurrentStepHolder
     
     var body: some View {

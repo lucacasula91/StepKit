@@ -1,8 +1,13 @@
 import UIKit
 
+
+/// Keeps track of the current managed step during the flow.
 class CurrentStepHolder: ObservableObject {
-    @Published var currentStep: [UUID] = [UUID()]
+
+    // MARK: - Public Properties
+    @Published public var currentStep: [UUID] = [UUID()]
     
+    // MARK: - Public Methods
     public func removeFirst() {
         if self.currentStep.isEmpty == false {
             self.currentStep.removeFirst()

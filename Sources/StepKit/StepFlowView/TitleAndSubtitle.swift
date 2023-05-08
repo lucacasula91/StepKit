@@ -1,9 +1,11 @@
 import SwiftUI
 
 struct TitleAndSubtitle: View {
-    var title: String
-    var subtitle: String?
-    var isCompleted: Bool
+    
+    // MARK: - Public Properties
+    public var title: String
+    public var subtitle: String?
+    public var isCompleted: Bool
     
     var body: some View {
         HStack {

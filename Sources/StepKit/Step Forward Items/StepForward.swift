@@ -34,7 +34,7 @@ struct StepForward: View {
             })
             
         case .timer(let seconds, let timerNotification):
-            let request = NotificationGenerator.createNotificationRequest(from: timerNotification, with: seconds)
+            let request = NotificationGenerator().createNotificationRequest(from: timerNotification, with: seconds)
             
             TimerView(seconds: seconds, notificationRequest: request) {
                 withAnimation {

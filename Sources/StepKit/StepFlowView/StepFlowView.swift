@@ -1,8 +1,10 @@
 import SwiftUI
 
 struct StepFlowView: View {
-    var steps: [StepModel]
-    @StateObject var currentStepHolder = CurrentStepHolder()
+    
+    // MARK: - Public Properties
+    public var steps: [StepModel]
+    @StateObject public var currentStepHolder = CurrentStepHolder()
     
     // MARK: - Initialization Methods
     init(steps: [StepModel]) {

@@ -1,16 +1,21 @@
 import SwiftUI
 
+/// Describe a grouped CheckBox view.
 struct CheckBoxGroup: View {
-    struct IdentifiableString {
+    
+    private struct IdentifiableString {
         var id = UUID()
         var text: String
     }
     
+    // MARK: - Private Properties
+    @State private var completedItems: [UUID] = []
     private var items: [IdentifiableString]
+    
+    // MARK: - Public Properties
     public var whenCompleted: () -> Void
 
-    @State var completedItems: [UUID] = []
-    
+    // MARK: - Initialization Method
     init(items: [String] = ["Mark as completed"], whenCompleted: @escaping () -> Void) {
         self.items = items.map { IdentifiableString(text: $0) }
         self.whenCompleted = whenCompleted
@@ -18,7 +23,6 @@ struct CheckBoxGroup: View {
     
     var body: some View {
         VStack(alignment: .trailing) {
-            
             ForEach(self.items, id: \.id) { item in
                 CheckBox(title: item.text, whenCompleted: {
                     completedItems.append(item.id)
@@ -37,9 +41,6 @@ struct CheckBoxGroup: View {
 
 struct CheckBoxGroup_Previews: PreviewProvider {
     static var previews: some View {
-        
-        CheckBoxGroup(items: ["First item", "Second item", "Third item"]) {
-
-        }
+        CheckBoxGroup(items: ["First item", "Second item", "Third item"]) { }
     }
 }
