@@ -3,7 +3,7 @@ import UIKit
 /// Describe the content of a specific step.
 ///
 /// By default action property i setted do .button()
-struct StepModel: Codable, Identifiable {
+struct Step: Codable, Identifiable {
     
     // MARK: - Public Properties
     public var id = UUID()

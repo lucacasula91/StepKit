@@ -5,7 +5,7 @@ import SwiftUI
 struct StepView: View {
     
     // MARK: - Public Properties
-    public var model: StepModel
+    public var model: Step
 
     // MARK: - Private Properties
     @State private var isCompleted: Bool = false
@@ -64,11 +64,11 @@ struct StepView_Previews: PreviewProvider {
 
     static var previews: some View {
         let currentStepHolder = CurrentStepHolder()
-        let model = StepModel(title: "Step 1",
+        let model = Step(title: "Step 1",
                               subtitle: "Add all powder ingredients",
                               description: "In a bowl put the flour, the salt and the yeast.\nYou can use dry or instant yeast.")
         
-        let model1 = StepModel(title: "Step 1",
+        let model1 = Step(title: "Step 1",
                                subtitle: "Add all powder ingredients",
                                description: "In a bowl put the flour, the salt and the yeast.\nYou can use dry or instant yeast.",
                                action: .timer(seconds: 2))

@@ -17,7 +17,7 @@ final class StepModelTests: XCTestCase {
   }
 }
 """
-        let stepModel = try JSONDecoder().decode(StepModel.self, from: jsonString.data(using: .utf8)!)
+        let stepModel = try JSONDecoder().decode(Step.self, from: jsonString.data(using: .utf8)!)
         XCTAssertNotNil(stepModel)
         XCTAssertEqual(stepModel.title, "My Title")
         XCTAssertEqual(stepModel.subtitle, "My Subtitle")
@@ -39,7 +39,7 @@ final class StepModelTests: XCTestCase {
   }
 }
 """
-        let stepModel = try JSONDecoder().decode(StepModel.self, from: jsonString.data(using: .utf8)!)
+        let stepModel = try JSONDecoder().decode(Step.self, from: jsonString.data(using: .utf8)!)
         XCTAssertNotNil(stepModel)
         XCTAssertEqual(stepModel.title, "My Title")
         XCTAssertEqual(stepModel.subtitle, "My Subtitle")
@@ -61,7 +61,7 @@ final class StepModelTests: XCTestCase {
   }
 }
 """
-        let stepModel = try JSONDecoder().decode(StepModel.self, from: jsonString.data(using: .utf8)!)
+        let stepModel = try JSONDecoder().decode(Step.self, from: jsonString.data(using: .utf8)!)
         XCTAssertNotNil(stepModel)
         XCTAssertEqual(stepModel.title, "My Title")
         XCTAssertEqual(stepModel.subtitle, "My Subtitle")
@@ -84,7 +84,7 @@ final class StepModelTests: XCTestCase {
   }
 }
 """
-        let stepModel = try JSONDecoder().decode(StepModel.self, from: jsonString.data(using: .utf8)!)
+        let stepModel = try JSONDecoder().decode(Step.self, from: jsonString.data(using: .utf8)!)
         XCTAssertNotNil(stepModel)
         XCTAssertEqual(stepModel.title, "My Title")
         XCTAssertEqual(stepModel.subtitle, "My Subtitle")
