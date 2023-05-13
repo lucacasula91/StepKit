@@ -91,5 +91,34 @@ final class StepModelTests: XCTestCase {
         XCTAssertEqual(stepModel.description, "My Description")
         XCTAssertEqual(stepModel.action, .timer(seconds: 12))
     }
+    
+    func test_StepModel_Codable_Init_Timer_And_Notification() throws {
+        
+        let jsonString = """
+{
+  "title": "My Title",
+  "subtitle": "My Subtitle",
+  "description": "My Description",
+  "action": {
+    "timer": {
+      "seconds": 12,
+      "notification": {
+        "title": "Step 1 completed",
+        "subtitle": "Let's jump to the next step"
+      }
+    }
+  }
+}
+"""
+        
+        let stepModel = try JSONDecoder().decode(Step.self, from: jsonString.data(using: .utf8)!)
+        XCTAssertNotNil(stepModel)
+        XCTAssertEqual(stepModel.title, "My Title")
+        XCTAssertEqual(stepModel.subtitle, "My Subtitle")
+        XCTAssertEqual(stepModel.description, "My Description")
+        XCTAssertEqual(stepModel.action, .timer(seconds: 12,
+                                                notification: TimerNotification(title: "Step 1 completed",
+                                                                                subtitle: "Let's jump to the next step")))
+    }
 
 }

@@ -2,15 +2,29 @@ import UIKit
 
 /// Describe the content of a specific step.
 ///
-/// By default action property i setted do .button()
-struct Step: Codable, Identifiable {
+/// By default action property i setted to .button(title: "Next")
+public struct Step: Codable, Identifiable {
     
     // MARK: - Public Properties
+
+    /// Unique identifier that represent a specific step.
     public var id = UUID()
-    private(set) var title: String
-    private(set) var subtitle: String?
-    private(set) var description: String
-    private(set) var action: StepAction = .button()
+    
+    /// Represent the title of a specific step.
+    public var title: String
+    
+    /// Represent the subtitle of a specific step.
+    ///
+    /// This property accept an `Optional` string value. Subtitle can be omitted by providing a `nil` value.
+    public var subtitle: String?
+    
+    /// Represent the description of a specific step.
+    public var description: String
+    
+    /// Represent the action type that should be used in order to mark a step as completed.
+    ///
+    /// By default `action` value is setted to `.button()`.
+    public var action: StepAction = .button()
     
     // MARK: - Initialization Method
     init(title: String, subtitle: String? = nil, description: String, action: StepAction = .button()) {

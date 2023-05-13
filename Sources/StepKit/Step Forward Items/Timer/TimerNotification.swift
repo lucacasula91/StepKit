@@ -1,11 +1,11 @@
 import UIKit
 
 /// Describe the content of LocalNotification to present once count down is completed.
-struct TimerNotification: Codable, Equatable {
+public struct TimerNotification: Codable, Equatable {
     
     /// Title of the local notification.
-    var title: String
+    public var title: String
     
     /// Subtitle of the local notification.
-    var subtitle: String
+    public var subtitle: String
 }

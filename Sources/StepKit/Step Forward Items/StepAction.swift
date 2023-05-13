@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// Specify the behavior that guide the step forward flow.
-enum StepAction: Codable, Equatable {
+public enum StepAction: Codable, Equatable {
 
     /// Button object that allow to make a step forward.
     ///

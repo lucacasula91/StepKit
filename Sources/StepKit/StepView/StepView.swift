@@ -1,8 +1,7 @@
 import SwiftUI
 
-
-/// Describe the UI of a specific step.
-struct StepView: View {
+/// Describe the UI of a specific ``Step`` object.
+public struct StepView: View {
     
     // MARK: - Public Properties
     public var model: Step
@@ -14,7 +13,7 @@ struct StepView: View {
     // MARK: - Public Properties
     @EnvironmentObject var currentStepHolder: CurrentStepHolder
     
-    var body: some View {
+    public var body: some View {
         ZStack {
             Color(UIColor.systemBackground)
             
@@ -64,9 +63,9 @@ struct StepView_Previews: PreviewProvider {
 
     static var previews: some View {
         let currentStepHolder = CurrentStepHolder()
-        let model = Step(title: "Step 1",
-                              subtitle: "Add all powder ingredients",
-                              description: "In a bowl put the flour, the salt and the yeast.\nYou can use dry or instant yeast.")
+        let model = Step(title: "Milk and yeast",
+                         description: "Heat the milk until it is warm but not hot, about 90 degrees.\nIn a large bowl, combine it with the yeast. Stir lightly, and let sit until the mixture is foamy, about 5 minutes.",
+                         action: .timer(seconds: 300, notification: TimerNotification(title: "Milk and yeast completed", subtitle: "Let's jump to the next step")))
         
         let model1 = Step(title: "Step 1",
                                subtitle: "Add all powder ingredients",
@@ -76,7 +75,6 @@ struct StepView_Previews: PreviewProvider {
             StepView(model: model)
             StepView(model: model1)
         }
-        .preferredColorScheme(.dark)
         .environmentObject(currentStepHolder)
         .onAppear {
             currentStepHolder.currentStep = [model.id, model1.id]

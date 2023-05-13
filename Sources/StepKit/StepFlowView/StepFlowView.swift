@@ -1,10 +1,11 @@
 import SwiftUI
 
-struct StepFlowView: View {
+/// Represent the UI of a specific ``Step`` array object.
+public struct StepFlowView: View {
     
     // MARK: - Public Properties
     public var steps: [Step]
-    @StateObject public var currentStepHolder = CurrentStepHolder()
+    @StateObject var currentStepHolder = CurrentStepHolder()
     
     // MARK: - Initialization Methods
     init(steps: [Step]) {
@@ -20,7 +21,7 @@ struct StepFlowView: View {
         }
     }
     
-    var body: some View {
+    public var body: some View {
         ScrollView() {
             ForEach(steps, id: \.id) { model in
                 StepView(model: model)
