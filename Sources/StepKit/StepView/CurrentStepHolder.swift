@@ -1,8 +1,7 @@
 import UIKit
 
-
 /// Keeps track of the current managed step during the flow.
-class CurrentStepHolder: ObservableObject {
+internal class CurrentStepHolder: ObservableObject {
 
     // MARK: - Public Properties
     @Published public var currentStep: [UUID] = [UUID()]

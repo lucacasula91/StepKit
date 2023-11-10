@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// Describe a grouped CheckBox view.
-struct CheckBoxGroup: View {
+internal struct CheckBoxGroup: View {
     
     private struct IdentifiableString {
         var id = UUID()

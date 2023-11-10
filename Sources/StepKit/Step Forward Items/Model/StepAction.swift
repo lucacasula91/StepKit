@@ -31,4 +31,12 @@ public enum StepAction: Codable, Equatable {
     /// - parameter seconds: Amount of seconds specified in TimeInterval object.
     /// - parameter notification: Model that represent the notification content that should be prompted once the count down is completed.
     case timer(seconds: TimeInterval, notification: TimerNotification? = nil)
+    
+    /// Stepper counter that allow to track repetitions in order to mark a step as completed.
+    ///
+    /// By default `title` property is setted to **Repetitions** string.
+    ///
+    /// - parameter total: The amount of repetitions to perform.
+    /// - parameter title: The title to assign to the checkbox.
+    case stepper(total: Int, title: String = "Repetitions")
 }

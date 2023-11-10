@@ -6,8 +6,8 @@ import PackageDescription
 let package = Package(
     name: "StepKit",
     platforms: [
-        .iOS(.v14),
-        .watchOS(SupportedPlatform.WatchOSVersion.v5)
+        .iOS(.v15),
+        //.watchOS(.v8)
     ],
     products: [
         

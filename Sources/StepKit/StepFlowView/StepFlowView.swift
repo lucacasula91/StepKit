@@ -8,11 +8,11 @@ public struct StepFlowView: View {
     @StateObject var currentStepHolder = CurrentStepHolder()
     
     // MARK: - Initialization Methods
-    init(steps: [Step]) {
+    public init(steps: [Step]) {
         self.steps = steps
     }
     
-    init(data: Data) throws {
+    public init(data: Data) throws {
         do {
             let steps = try JSONDecoder().decode([Step].self, from: data)
             self.steps = steps
@@ -34,7 +34,6 @@ public struct StepFlowView: View {
         }
         .environmentObject(currentStepHolder)
     }
-        
 }
 
 struct StepFlowView_Previews: PreviewProvider {
@@ -57,8 +56,14 @@ struct StepFlowView_Previews: PreviewProvider {
         let step4 = Step(title: "Step 4",
                               subtitle: "Set in plate",
                               description: "Put the cake in a plate and add some powdered sugar on top.",
-                              action: .checkBoxGroup(items: ["Plate the cake", "Add powdered sugar on top"]))
+                         action: .checkBoxGroup(items: ["Plate the cake", "Add powdered sugar on top"]))
         
-        StepFlowView(steps: [step1, step2, step3, step4])
+        ScrollView(showsIndicators: true) {
+            VStack(spacing: 16) {
+                StepFlowView(steps: [step1, step2, step3, step4])
+            }
+            .padding()
+        }
+        
     }
 }

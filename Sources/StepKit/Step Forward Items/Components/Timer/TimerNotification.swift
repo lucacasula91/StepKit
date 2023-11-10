@@ -1,6 +1,6 @@
 import UIKit
 
-/// Describe the content of LocalNotification to present once count down is completed.
+/// Describe the content of LocalNotification presented once count down is completed.
 public struct TimerNotification: Codable, Equatable {
     
     /// Title of the local notification.

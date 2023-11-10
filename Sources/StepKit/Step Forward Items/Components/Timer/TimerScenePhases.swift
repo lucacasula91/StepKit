@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// Keeps track of time interval between Scene phases changes.
-struct TimerScenePhases {
+internal struct TimerScenePhases {
     
     /// Date object of when the app entered in background mode.
     static var backgroundDate: Date?

@@ -4,7 +4,7 @@ import UserNotifications
 /// Represent a count down element with a button to start and pause the counter.
 ///
 /// The time of the counter is expressed in seconds and will be graphically rendered according the `abbreviated` unit style of **DateComponentsFormatter** object.
-struct TimerView: View {
+internal struct TimerView: View {
 
     // MARK: - Public Properties
     @Environment(\.scenePhase) var scenePhase
@@ -80,7 +80,7 @@ struct TimerView: View {
             }
         }
         .padding(12)
-        .background(Color(UIColor.systemGray5))
+        .background(Material.regular)
         .cornerRadius(8)
     }
 

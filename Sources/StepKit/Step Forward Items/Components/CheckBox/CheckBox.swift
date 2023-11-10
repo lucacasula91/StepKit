@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// Represent a single checkbox element.
-struct CheckBox: View {
+internal struct CheckBox: View {
     public var title: String = "Mark as completed"
     public var whenCompleted: () -> Void
     @State var isChecked: Bool = false

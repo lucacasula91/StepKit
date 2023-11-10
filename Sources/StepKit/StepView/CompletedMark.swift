@@ -3,7 +3,7 @@ import SwiftUI
 /// Represent a completion mark that consist in a **Completed** text followed by a green check mark.
 ///
 /// CompletedMark view expose the `isVisible` boolean parameter with drives it's visibility.
-public struct CompletedMark: View {
+internal struct CompletedMark: View {
     var isVisible: Bool
     
     public var body: some View {

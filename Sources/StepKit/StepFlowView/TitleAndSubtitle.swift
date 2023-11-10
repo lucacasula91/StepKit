@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct TitleAndSubtitle: View {
+internal struct TitleAndSubtitle: View {
     
     // MARK: - Public Properties
     public var title: String
@@ -29,9 +29,12 @@ struct TitleAndSubtitle: View {
     }
 }
 
-
 struct TitleAndSubtitle_Previews: PreviewProvider {
     static var previews: some View {
-        TitleAndSubtitle(title: "My Title", subtitle: "My Subtitle", isCompleted: true)
+        VStack(spacing: 30) {
+            TitleAndSubtitle(title: "My Title", subtitle: "My Subtitle", isCompleted: false)
+            TitleAndSubtitle(title: "My Title", subtitle: "My Subtitle", isCompleted: true)
+
+        }
     }
 }
