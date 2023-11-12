@@ -34,7 +34,7 @@ internal struct CheckBoxGroup: View {
             }
         }
         .padding(12)
-        .background(Color(UIColor.systemGray5))
+        .background(Material.thin)
         .cornerRadius(8)
     }
 }
