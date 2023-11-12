@@ -10,8 +10,8 @@ public struct StepFlowView: View {
     // MARK: - Initialization Methods
     public init(steps: [Step]) {
         self.steps = steps
-        if let bundle = StepKit.appearance.bundle,
-           let fontName = StepKit.appearance.fontName {
+        if let bundle = StepKitProxy.appearance.bundle,
+           let fontName = StepKitProxy.appearance.fontName {
             let fontURL = bundle.url(forResource: fontName,
                                      withExtension: "ttf")
                                         
@@ -22,8 +22,8 @@ public struct StepFlowView: View {
     public init(data: Data) throws {
         
         
-        if let bundle = StepKit.appearance.bundle,
-           let fontName = StepKit.appearance.fontName {
+        if let bundle = StepKitProxy.appearance.bundle,
+           let fontName = StepKitProxy.appearance.fontName {
             let fontURL = bundle.url(forResource: fontName,
                                      withExtension: "ttf")
                                         
