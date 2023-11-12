@@ -1,8 +1,8 @@
 import SwiftUI
 
-public class StepKit {
-    var bundle: Bundle?
-    var fontName: String? = "CocoGothicProDisp-Regular"
+public class StepKitProxy {
+    public var bundle: Bundle?
+    public var fontName: String? = "CocoGothicProDisp-Regular"
     
-    static let appearance = StepKit()
+    static let appearance = StepKitProxy()
 }
