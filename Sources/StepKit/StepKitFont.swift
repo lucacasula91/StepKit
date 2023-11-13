@@ -2,11 +2,14 @@ import SwiftUI
 
 internal struct StepKitFont: ViewModifier {
     var style: Font.TextStyle
+    var bold: Bool
     var size: CGFloat
-    var fontName: String
+    var regularFontName: String
+    var boldFontName: String
 
-    init(style: Font.TextStyle) {
+    init(style: Font.TextStyle, bold: Bool) {
         self.style = style
+        self.bold = bold
         
         switch style {
         case .largeTitle: size = 34
@@ -23,17 +26,18 @@ internal struct StepKitFont: ViewModifier {
         default: size = 17
         }
         
-        fontName = StepKit.appearance.fontName ?? "SF Pro"
+        regularFontName = StepKit.appearance().proxy?.regularFont.postScriptName ?? "SFProDisplay-Regular"
+        boldFontName = StepKit.appearance().proxy?.boldFont.postScriptName ?? "SFProDisplay-Bold"
     }
     
     func body(content: Content) -> some View {
-        content.font(.custom(fontName, size: size, relativeTo: style))
+        content.font(.custom(bold ? boldFontName: regularFontName, size: size, relativeTo: style))
     }
 }
 
 extension View {
-    func proxyFont(_ style: Font.TextStyle = .body) -> some View {
-        modifier(StepKitFont(style: style))
+    func proxyFont(_ style: Font.TextStyle = .body, bold: Bool = false) -> some View {
+        modifier(StepKitFont(style: style, bold: bold))
     }
 }
 

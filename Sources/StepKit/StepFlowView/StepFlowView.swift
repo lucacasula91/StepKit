@@ -10,26 +10,10 @@ public struct StepFlowView: View {
     // MARK: - Initialization Methods
     public init(steps: [Step]) {
         self.steps = steps
-        if let bundle = StepKitProxy.appearance.bundle,
-           let fontName = StepKitProxy.appearance.fontName {
-            let fontURL = bundle.url(forResource: fontName,
-                                     withExtension: "ttf")
-                                        
-            CTFontManagerRegisterFontsForURL(fontURL! as CFURL, .process, nil)
-        }
+       
     }
     
     public init(data: Data) throws {
-        
-        
-        if let bundle = StepKitProxy.appearance.bundle,
-           let fontName = StepKitProxy.appearance.fontName {
-            let fontURL = bundle.url(forResource: fontName,
-                                     withExtension: "ttf")
-                                        
-            CTFontManagerRegisterFontsForURL(fontURL! as CFURL, .process, nil)
-        }
-        
         do {
             let steps = try JSONDecoder().decode([Step].self, from: data)
             self.steps = steps
