@@ -26,8 +26,8 @@ internal struct StepKitFont: ViewModifier {
         default: size = 17
         }
         
-        regularFontName = StepKit.appearance().proxy?.regularFont.postScriptName ?? "SFProDisplay-Regular"
-        boldFontName = StepKit.appearance().proxy?.boldFont.postScriptName ?? "SFProDisplay-Bold"
+        regularFontName = StepKitAppearance.proxy().fontPack?.regularFont.postScriptName ?? "SFProDisplay-Regular"
+        boldFontName = StepKitAppearance.proxy().fontPack?.boldFont.postScriptName ?? "SFProDisplay-Bold"
     }
     
     func body(content: Content) -> some View {
