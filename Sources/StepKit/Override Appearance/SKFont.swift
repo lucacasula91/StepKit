@@ -7,4 +7,9 @@ public struct SKFont {
     public var fileExtension: String
     public var postScriptName: String
     
+    public init(fileName: String, fileExtension: String, postScriptName: String) {
+        self.fileName = fileName
+        self.fileExtension = fileExtension
+        self.postScriptName = postScriptName
+    }
 }

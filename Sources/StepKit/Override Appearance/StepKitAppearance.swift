@@ -25,7 +25,7 @@ public class StepKitAppearance {
         }
     }
     
-    static func proxy() -> Self {
+    static public func proxy() -> Self {
         return StepKitAppearance() as! Self
     }
 }
