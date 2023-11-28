@@ -11,7 +11,7 @@ internal struct CompletedMark: View {
             VStack {
                 HStack {
                     Text("Completed")
-                        .fontWeight(.bold)
+                        .proxyFont(.body, bold: true)
                     Image(systemName: "checkmark.circle.fill")
                         .foregroundColor(.green)
                 }

@@ -1,4 +1,4 @@
-import UIKit
+import SwiftUI
 
 /// Keeps track of the current managed step during the flow.
 internal class CurrentStepHolder: ObservableObject {

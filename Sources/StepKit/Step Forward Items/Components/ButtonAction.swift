@@ -20,7 +20,7 @@ internal struct ButtonAction: View {
             Text(title)
         }
         .padding()
-        .font(.headline)
+        .proxyFont(.headline, bold: true)
     }
 }
 

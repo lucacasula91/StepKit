@@ -5,18 +5,21 @@ public struct StepFlowView: View {
     
     // MARK: - Public Properties
     public var steps: [Step]
+
     @StateObject var currentStepHolder = CurrentStepHolder()
     
     // MARK: - Initialization Methods
     public init(steps: [Step]) {
         self.steps = steps
-       
+        self.injectProxyAppearance()
     }
     
     public init(data: Data) throws {
         do {
             let steps = try JSONDecoder().decode([Step].self, from: data)
             self.steps = steps
+            self.injectProxyAppearance()
+
         } catch {
             throw StepKitError.invalidJsonData
         }
@@ -34,6 +37,26 @@ public struct StepFlowView: View {
             self.currentStepHolder.currentStep = stepsToHold
         }
         .environmentObject(currentStepHolder)
+    }
+    
+    private func injectProxyAppearance() {
+        if let bundle = StepKitAppearance.proxy.fontPack?.bundle {
+            
+            if let regularFont = StepKitAppearance.proxy.fontPack?.regularFont {
+                let fontURL = bundle.url(forResource: regularFont.fileName,
+                                         withExtension: regularFont.fileExtension)
+                                            
+                CTFontManagerRegisterFontsForURL(fontURL! as CFURL, .process, nil)
+            }
+            
+            if let boldFont = StepKitAppearance.proxy.fontPack?.boldFont {
+                let fontURL = bundle.url(forResource: boldFont.fileName,
+                                         withExtension: boldFont.fileExtension)
+                                            
+                CTFontManagerRegisterFontsForURL(fontURL! as CFURL, .process, nil)
+            }
+            
+        }
     }
 }
 

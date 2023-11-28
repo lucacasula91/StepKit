@@ -22,14 +22,12 @@ internal struct TimerView: View {
         HStack {
             VStack(alignment: .leading) {
                 Text("Timer")
-                    .font(.headline)
+                    .proxyFont(.headline, bold: true)
                     .foregroundColor(.primary)
                 
                 Text(canBeFired ? counter(from: seconds) : "Completed")
                     .foregroundColor(.secondary)
-                    .font(.callout)
-                    .fontWeight(.bold)
-                    .onReceive(timer){ _ in
+                    .onReceive(timer) { _ in
                         if self.seconds > 0 && isTimerActive {
                             self.seconds -= 1
                         } else if self.seconds <= 0 {
@@ -40,6 +38,8 @@ internal struct TimerView: View {
                             }
                         }
                     }
+                    .proxyFont(.callout, bold: true)
+
             }
             
             Button {
@@ -55,7 +55,7 @@ internal struct TimerView: View {
                 Image(systemName: isTimerActive ? "pause.fill" : "play.fill")
                     .foregroundColor(Color.white)
                     .padding(20)
-                    .background(canBeFired ? Color.blue : Color.gray )
+                    .background(canBeFired ? Color.accentColor : Color.gray )
                     .clipShape(Circle())
             }
             .padding(.leading, 8)

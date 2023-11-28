@@ -3,13 +3,15 @@ import SwiftUI
 /// Describe the UI of a specific ``Step`` object.
 internal struct StepView: View {
     
-    
     // MARK: - Public Properties
     public var model: Step
 
     // MARK: - Private Properties
-    @State private var isCompleted: Bool = false
-    @State private var isExpanded: Bool = true
+    @SceneStorage("StepView.isCompleted")
+    private var isCompleted: Bool = false
+    
+    @SceneStorage("StepView.isExpanded")
+    private var isExpanded: Bool = true
 
     // MARK: - Public Properties
     @EnvironmentObject var currentStepHolder: CurrentStepHolder
@@ -23,7 +25,7 @@ internal struct StepView: View {
                 
                 if isExpanded {
                     Text(model.description)
-                        .font(.body)
+                        .proxyFont(.body)
                         .padding(.top, 2)
                         .foregroundColor(.secondary)
                         .layoutPriority(1)

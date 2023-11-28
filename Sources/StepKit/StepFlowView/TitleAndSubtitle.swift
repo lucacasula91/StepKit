@@ -12,7 +12,7 @@ internal struct TitleAndSubtitle: View {
             VStack(alignment: .leading) {
                 HStack {
                     Text(title)
-                        .proxyFont(.title3)
+                        .proxyFont(.title3, bold: true)
                         
                     Spacer()
                     CompletedMark(isVisible: isCompleted)
@@ -21,7 +21,6 @@ internal struct TitleAndSubtitle: View {
                 if let subtitle = subtitle {
                     Text(subtitle)
                         .proxyFont(.headline)
-
                 }
             }
             .foregroundColor(.primary)

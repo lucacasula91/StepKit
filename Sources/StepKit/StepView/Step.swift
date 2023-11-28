@@ -8,7 +8,7 @@ public struct Step: Codable, Identifiable {
     // MARK: - Public Properties
 
     /// Unique identifier that represent a specific step.
-    public var id = UUID()
+    public var id: UUID = UUID()
     
     /// Represent the title of a specific step.
     public var title: String

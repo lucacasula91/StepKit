@@ -10,10 +10,9 @@ internal struct CheckBox: View {
         HStack {
             
             Text(title)
-                .font(.body)
-                .fontWeight(.bold)
                 .foregroundColor(.primary)
                 .strikethrough(isChecked)
+                .proxyFont(.body, bold: true)
             
             Button(action: {
                 self.isChecked.toggle()

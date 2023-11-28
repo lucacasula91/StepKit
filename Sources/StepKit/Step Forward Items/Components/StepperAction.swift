@@ -16,14 +16,16 @@ internal struct StepperAction: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(title)
-                .fontWeight(.bold)
+                .proxyFont(.body, bold: true)
             HStack(spacing: 30) {
                 HStack(spacing: 2) {
                     Text("\(currentRepeat)")
-                        .fontWeight(.bold)
+                        .proxyFont(.body, bold: true)
+
                     Text(" of ")
+                    
                     Text("\(total)")
-                        .fontWeight(.bold)
+                        .proxyFont(.body, bold: true)
                 }
                 Button(action: {
                     guard isCompleted == false else {
@@ -40,7 +42,7 @@ internal struct StepperAction: View {
                     
                 }, label: {
                     Text((currentRepeat >= total) ? "Done" : "Next")
-                        .fontWeight(isCompleted ? .bold : .regular)
+                        .proxyFont(.body, bold: isCompleted ? true : false)
                 })
                 .disabled(markedAsDone)
                 .padding(8)

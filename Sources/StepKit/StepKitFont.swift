@@ -4,9 +4,8 @@ internal struct StepKitFont: ViewModifier {
     var style: Font.TextStyle
     var bold: Bool
     var size: CGFloat
-    var regularFontName: String
-    var boldFontName: String
-
+    var overridedFont: String?
+    
     init(style: Font.TextStyle, bold: Bool) {
         self.style = style
         self.bold = bold
@@ -25,13 +24,19 @@ internal struct StepKitFont: ViewModifier {
         case .caption2: size = 12
         default: size = 17
         }
-        
-        regularFontName = StepKitAppearance.proxy().fontPack?.regularFont.postScriptName ?? "SFProDisplay-Regular"
-        boldFontName = StepKitAppearance.proxy().fontPack?.boldFont.postScriptName ?? "SFProDisplay-Bold"
+
+        if let fontPack = StepKitAppearance.proxy.fontPack {
+            overridedFont = bold ? fontPack.boldFont.postScriptName : fontPack.regularFont.postScriptName
+        }
+
     }
     
     func body(content: Content) -> some View {
-        content.font(.custom(bold ? boldFontName: regularFontName, size: size, relativeTo: style))
+        if let _overridedFont = overridedFont {
+            return content.font(.custom(_overridedFont, size: size, relativeTo: style))
+        } else {
+            return content.font(.system(style).weight(bold ? .bold : .regular))
+        }
     }
 }
 
