@@ -4,8 +4,9 @@ import SwiftUI
 internal class CurrentStepHolder: ObservableObject {
 
     // MARK: - Public Properties
-    @Published public var currentStep: [UUID] = [UUID()]
-    
+    @Published public var currentStep: [String] = []
+
+
     // MARK: - Public Methods
     public func removeFirst() {
         if self.currentStep.isEmpty == false {

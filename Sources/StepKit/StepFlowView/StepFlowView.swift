@@ -32,8 +32,11 @@ public struct StepFlowView: View {
                 Spacer(minLength: 20)
             }
         }
-        .onAppear {
-            let stepsToHold = steps.compactMap { $0.id }
+        .task {
+            let stepsToHold = steps
+                .filter({ UserDefaults.standard.bool(forKey: "\($0.id).isCompleted") == false})
+                .compactMap { $0.id }
+
             self.currentStepHolder.currentStep = stepsToHold
         }
         .environmentObject(currentStepHolder)

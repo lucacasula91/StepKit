@@ -5,13 +5,15 @@ internal struct StepView: View {
     
     // MARK: - Public Properties
     public var model: Step
+    @State var isCompleted: Bool
+    @State var isExpanded: Bool
 
-    // MARK: - Private Properties
-    @SceneStorage("StepView.isCompleted")
-    private var isCompleted: Bool = false
-    
-    @SceneStorage("StepView.isExpanded")
-    private var isExpanded: Bool = true
+    init(model: Step) {
+        self.model = model
+
+        self.isCompleted = UserDefaults.standard.value(forKey: model.getCompletedKey()) as? Bool ?? false
+        self.isExpanded = UserDefaults.standard.value(forKey: model.getExpandedKey()) as? Bool ?? true
+    }
 
     // MARK: - Public Properties
     @EnvironmentObject var currentStepHolder: CurrentStepHolder
@@ -37,6 +39,8 @@ internal struct StepView: View {
                         StepForward(type: model.action) {
                             isExpanded.toggle()
                             isCompleted.toggle()
+                            UserDefaults.standard.setValue(isCompleted, forKey: model.getCompletedKey())
+                            UserDefaults.standard.setValue(isExpanded, forKey: model.getExpandedKey())
                             if isCompleted {
                                 currentStepHolder.removeFirst()
                             }

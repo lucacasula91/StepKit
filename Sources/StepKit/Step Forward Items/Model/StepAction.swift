@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// Specify the behavior that guide the step forward flow.
-public enum StepAction: Codable, Equatable {
+public enum StepAction: Codable, StepIdentifiable {
 
     /// Button object that allow to make a step forward.
     ///
@@ -39,4 +39,31 @@ public enum StepAction: Codable, Equatable {
     /// - parameter total: The amount of repetitions to perform.
     /// - parameter title: The title to assign to the checkbox.
     case stepper(total: Int, title: String = "Repetitions")
+
+    // MARK: - Hashable Logic
+    public func generateStepIdentifier() -> String {
+
+        switch self {
+        case .button(let title): 
+            let stepIdentifier = StepIdentifierProvider(elements: "button", title).stepIdentifier
+            return stepIdentifier
+
+        case .checkBox(let title):
+            let stepIdentifier = StepIdentifierProvider(elements: "checkBox", title).stepIdentifier
+            return stepIdentifier
+
+        case .checkBoxGroup(let items):
+            let stepIdentifier = StepIdentifierProvider(elements: "checkBoxGroup", items.joined()).stepIdentifier
+            return stepIdentifier
+
+        case .timer(let seconds, let notification):
+            let stepIdentifier = StepIdentifierProvider(elements: "timer", "\(seconds)", notification?.id ?? "").stepIdentifier
+            return stepIdentifier
+
+        case .stepper(let total, let title):
+            let stepIdentifier = StepIdentifierProvider(elements: "stepper", "\(total)", title).stepIdentifier
+            return stepIdentifier
+        }
+    }
+
 }

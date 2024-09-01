@@ -1,15 +1,12 @@
-import UIKit
+import Foundation
 
 /// Describe the content of a specific step.
 ///
 /// By default action property i setted to .button(title: "Next")
-public struct Step: Codable, Identifiable {
-    
+public struct Step: Codable, StepIdentifiable, Equatable {
+
     // MARK: - Public Properties
 
-    /// Unique identifier that represent a specific step.
-    public var id: UUID = UUID()
-    
     /// Represent the title of a specific step.
     public var title: String
     
@@ -27,17 +24,45 @@ public struct Step: Codable, Identifiable {
     public var action: StepAction = .button()
     
     // MARK: - Initialization Method
+    /// Create a new instance of Step.
+    /// - Parameters:
+    ///   - title: Represent the title of a specific step.
+    ///   - subtitle: Represent the subtitle of a specific step.
+    ///   - description: Represent the description of a specific step.
+    ///   - action: Represent the action type that should be used in order to mark a step as completed.
     init(title: String, subtitle: String? = nil, description: String, action: StepAction = .button()) {
         self.title = title
         self.subtitle = subtitle
         self.description = description
         self.action = action
     }
-    
+
     enum CodingKeys: String, CodingKey {
         case title
         case subtitle
         case description
         case action
+    }
+
+    // MARK: - Public Method
+    public func getCompletedKey() -> String {
+        let key = "\(id).isCompleted"
+        return key
+    }
+
+    public func getExpandedKey() -> String {
+        let key = "\(id).isExpanded"
+        return key
+    }
+
+    // MARK: - Hashable Logic
+    public func generateStepIdentifier() -> String {
+        let stepIdentifier = StepIdentifierProvider(elements: title, subtitle, description, action.id).stepIdentifier
+        return stepIdentifier
+    }
+
+    // MARK: - Equatable Logic
+    public static func == (lhs: Step, rhs: Step) -> Bool {
+        lhs.id == rhs.id
     }
 }

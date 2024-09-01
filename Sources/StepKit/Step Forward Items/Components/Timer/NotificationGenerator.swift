@@ -1,4 +1,4 @@
-import UIKit
+import Foundation
 import UserNotifications
 
 /// Helper class that consist in generating a local notification request providing the TimerNotification model and the TimeInterval object.
