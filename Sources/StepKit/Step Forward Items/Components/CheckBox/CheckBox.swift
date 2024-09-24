@@ -4,6 +4,10 @@ import SwiftUI
 internal struct CheckBox: View {
     public var title: String = "Mark as completed"
     public var whenCompleted: () -> Void
+
+    private let uncheckedIcon = Image(systemName: "circle")
+    private let checkedIcon = Image(systemName: "checkmark.circle.fill")
+
     @State var isChecked: Bool = false
     
     var body: some View {
@@ -13,16 +17,23 @@ internal struct CheckBox: View {
                 .foregroundColor(.primary)
                 .strikethrough(isChecked)
                 .proxyFont(.body, bold: true)
-            
+
             Button(action: {
                 self.isChecked.toggle()
                 if isChecked {
                     whenCompleted()
                 }
             }) {
-                Image(systemName: isChecked ? "checkmark.circle.fill" : "circle")
-                    .resizable()
-                    .frame(width: 30, height: 30)
+
+                if isChecked {
+                    checkedIcon
+                        .resizable()
+                        .frame(width: 30, height: 30)
+                } else {
+                    uncheckedIcon
+                        .resizable()
+                        .frame(width: 30, height: 30)
+                }
             }
             .frame(width: 44, height: 44)
             .disabled(isChecked)

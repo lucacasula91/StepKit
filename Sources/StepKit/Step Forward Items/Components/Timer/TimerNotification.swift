@@ -1,6 +1,6 @@
 import UIKit
 
-/// Describe the content of LocalNotification presented once count down is completed.
+/// Describe the content of LocalNotification to present once count down action is completed.
 public struct TimerNotification: Codable, StepIdentifiable {
 
     /// Title of the local notification.
