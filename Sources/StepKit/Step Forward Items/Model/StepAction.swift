@@ -67,3 +67,9 @@ public enum StepAction: Codable, StepIdentifiable {
     }
 
 }
+
+extension StepAction: Equatable {
+    public static func ==(lhs: StepAction, rhs: StepAction) -> Bool {
+        return lhs.id == rhs.id
+    }
+}
