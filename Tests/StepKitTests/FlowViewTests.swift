@@ -12,7 +12,8 @@ final class StepFlowViewTests: XCTestCase {
     "description": "My Description",
     "action": {
       "button": {
-        "title": "Next"
+        "title": "Next",
+        "completed": false
       }
     }
   },

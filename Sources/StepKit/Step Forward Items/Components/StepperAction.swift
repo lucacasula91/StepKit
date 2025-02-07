@@ -49,7 +49,7 @@ internal struct StepperAction: View {
             }
         }
         .padding(12)
-        .background(Color(UIColor.gray))
+        .background(Material.regular)
         .cornerRadius(8)
     }
 }

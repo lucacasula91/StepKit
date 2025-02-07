@@ -22,7 +22,9 @@ public struct Step: Codable, StepIdentifiable, Equatable {
     ///
     /// By default `action` value is setted to `.button()`.
     public var action: StepAction = .button()
-    
+
+    public var completed: Bool?
+
     // MARK: - Initialization Method
     /// Create a new instance of Step.
     /// - Parameters:
@@ -35,6 +37,18 @@ public struct Step: Codable, StepIdentifiable, Equatable {
         self.subtitle = subtitle
         self.description = description
         self.action = action
+        self.completed = action.completed
+    }
+
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.title = try container.decode(String.self, forKey: .title)
+        self.subtitle = try container.decodeIfPresent(String.self, forKey: .subtitle)
+        self.description = try container.decode(String.self, forKey: .description)
+
+        let action = try container.decode(StepAction.self, forKey: .action)
+        self.action = action
+        self.completed = action.completed
     }
 
     enum CodingKeys: String, CodingKey {
@@ -42,18 +56,10 @@ public struct Step: Codable, StepIdentifiable, Equatable {
         case subtitle
         case description
         case action
+        case completed
     }
 
     // MARK: - Public Method
-    public func getCompletedKey() -> String {
-        let key = "\(id).isCompleted"
-        return key
-    }
-
-    public func getExpandedKey() -> String {
-        let key = "\(id).isExpanded"
-        return key
-    }
 
     // MARK: - Hashable Logic
     public func generateStepIdentifier() -> String {

@@ -22,7 +22,7 @@ final class StepModelTests: XCTestCase {
         XCTAssertEqual(stepModel.title, "My Title")
         XCTAssertEqual(stepModel.subtitle, "My Subtitle")
         XCTAssertEqual(stepModel.description, "My Description")
-        XCTAssertEqual(stepModel.action, .button(title: "Next"))
+        XCTAssertEqual(stepModel.action, .button(title: "Next", completed: false))
     }
     
     func test_StepModel_Codable_Init_CheckBox() throws {

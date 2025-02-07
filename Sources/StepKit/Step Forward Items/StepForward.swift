@@ -8,8 +8,8 @@ internal struct StepForward: View {
     var body: some View {
         
         switch type {
-        case .button(let title):
-            ButtonAction(title: title) {
+        case .button(let title, let completed, _):
+            ButtonAction(title: title, completed: completed) {
                 withAnimation {
                     onCompletion()
                 }

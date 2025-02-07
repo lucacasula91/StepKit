@@ -9,23 +9,29 @@ internal struct ButtonAction: View {
     
     // MARK: - Public Properties
     public var title: String
+    @State public var completed: Bool?
     public var whenCompleted: () -> Void
     
     var body: some View {
         Button {
             withAnimation {
+                completed?.toggle()
                 whenCompleted()
             }
         } label: {
             Text(title)
         }
         .padding()
+        .disabled(completed ?? false)
         .proxyFont(.headline, bold: true)
     }
 }
 
 struct ButtonAction_Previews: PreviewProvider {
     static var previews: some View {
-        ButtonAction(title: "Next", whenCompleted: { })
+        VStack() {
+            ButtonAction(title: "Next", whenCompleted: { })
+            ButtonAction(title: "Next", completed: true, whenCompleted: { })
+        }
     }
 }

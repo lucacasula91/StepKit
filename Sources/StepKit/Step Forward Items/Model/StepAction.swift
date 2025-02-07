@@ -3,13 +3,8 @@ import SwiftUI
 /// Specify the behavior that guide the step forward flow.
 public enum StepAction: Codable, StepIdentifiable {
 
-    /// Button object that allow to make a step forward.
-    ///
-    /// By default `title` property is setted to **Next** string.
-    ///
-    /// - parameter title: The title to assign to the button.
-    case button(title: String = "Next")
-    
+    case button(title: String = "Next", completed: Bool? = nil, identifier: String? = nil)
+
     /// Checkbox button that allow to mark a step as completed.
     ///
     /// By default `title` property is setted to **Mark as completed** string.
@@ -40,12 +35,22 @@ public enum StepAction: Codable, StepIdentifiable {
     /// - parameter title: The title to assign to the checkbox.
     case stepper(total: Int, title: String = "Repetitions")
 
+    public var completed: Bool {
+        switch self {
+        case .button(_, let completed, _):
+            return completed ?? false
+
+        default:
+            return false
+        }
+    }
+
     // MARK: - Hashable Logic
     public func generateStepIdentifier() -> String {
 
         switch self {
-        case .button(let title): 
-            let stepIdentifier = StepIdentifierProvider(elements: "button", title).stepIdentifier
+        case .button(_, _, let identifier):
+            let stepIdentifier = StepIdentifierProvider(elements: "button", identifier).stepIdentifier
             return stepIdentifier
 
         case .checkBox(let title):
@@ -73,3 +78,38 @@ extension StepAction: Equatable {
         return lhs.id == rhs.id
     }
 }
+
+//extension StepAction {
+//    public init(from decoder: any Decoder) throws {
+//        let container = try decoder.container(keyedBy: CodingKeys.self)
+//
+//        var allKeys = ArraySlice(container.allKeys)
+//        guard let onlyKey = allKeys.popFirst(), allKeys.isEmpty else {
+//            throw DecodingError.typeMismatch(StepAction.self, DecodingError.Context.init(codingPath: container.codingPath, debugDescription: "Invalid number of keys found, expected one.", underlyingError: nil))
+//        }
+//        switch onlyKey {
+//        case .button:
+//            let nestedContainer = try container.nestedContainer(keyedBy: StepAction.ButtonCodingKeys.self, forKey: .button)
+//
+//            let title = try nestedContainer.decode(String.self, forKey: StepAction.ButtonCodingKeys.title)
+//            let completed = try nestedContainer.decodeIfPresent(Bool.self, forKey: StepAction.ButtonCodingKeys.completed) ?? false
+//            let identifier = try? nestedContainer.decodeIfPresent(String.self, forKey: StepAction.ButtonCodingKeys.identifier)
+//
+//            self = StepAction.button(title: title, completed: completed, identifier: identifier)
+//
+//        default: fatalError()
+//            //        case .checkBox:
+//            //            let nestedContainer = try container.nestedContainer(keyedBy: StepAction.CheckBoxCodingKeys.self, forKey: .checkBox)
+//            //            self = StepAction.checkBox(title: try nestedContainer.decode(String.self, forKey: StepAction.CheckBoxCodingKeys.title))
+//            //        case .checkBoxGroup:
+//            //            let nestedContainer = try container.nestedContainer(keyedBy: StepAction.CheckBoxGroupCodingKeys.self, forKey: .checkBoxGroup)
+//            //            self = StepAction.checkBoxGroup(items: try nestedContainer.decode([String].self, forKey: StepAction.CheckBoxGroupCodingKeys.items))
+//            //        case .timer:
+//            //            let nestedContainer = try container.nestedContainer(keyedBy: StepAction.TimerCodingKeys.self, forKey: .timer)
+//            //            self = StepAction.timer(seconds: try nestedContainer.decode(TimeInterval.self, forKey: StepAction.TimerCodingKeys.seconds), notification: try nestedContainer.decodeIfPresent(TimerNotification.self, forKey: StepAction.TimerCodingKeys.notification))
+//            //        case .stepper:
+//            //            let nestedContainer = try container.nestedContainer(keyedBy: StepAction.StepperCodingKeys.self, forKey: .stepper)
+//            //            self = StepAction.stepper(total: try nestedContainer.decode(Int.self, forKey: StepAction.StepperCodingKeys.total), title: try nestedContainer.decode(String.self, forKey: StepAction.StepperCodingKeys.title))
+//        }
+//    }
+//}
