@@ -36,13 +36,19 @@ public enum StepAction: Codable, StepIdentifiable {
     case stepper(total: Int, title: String = "Repetitions")
 
     public var completed: Bool {
-        switch self {
-        case .button(_, let completed, _):
-            return completed ?? false
 
-        default:
-            return false
+        get {
+            switch self {
+            case .button(_, let completed, _):
+                return completed ?? false
+
+            default:
+                return false
+            }
         }
+
+        set { }
+
     }
 
     // MARK: - Hashable Logic

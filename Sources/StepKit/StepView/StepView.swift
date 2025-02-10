@@ -38,21 +38,22 @@ internal struct StepView: View {
                     .padding(.top, 2)
                     .foregroundColor(.secondary)
                     .layoutPriority(1)
-            }
 
-            if isCompleted == false || isExpanded {
-                HStack {
-                    Spacer()
-                    StepForward(type: model.action) {
-                        isExpanded.toggle()
-                        isCompleted.toggle()
-                        if isCompleted {
-                            currentStepHolder.removeFirst()
+                if isCompleted == false {
+                    HStack {
+                        Spacer()
+                        StepForward(type: model.action) {
+                            isExpanded.toggle()
+                            isCompleted.toggle()
+                            if isCompleted {
+                                currentStepHolder.removeFirst()
+                            }
                         }
+                        .disabled(isCompleted)
                     }
-                    .disabled(isCompleted)
                 }
             }
+
         }
         .padding(16)
         .background(Material.thick, in: RoundedRectangle(cornerRadius: 16))

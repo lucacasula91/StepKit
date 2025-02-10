@@ -5,6 +5,7 @@ import Foundation
 /// By default action property i setted to .button(title: "Next")
 public struct Step: Codable, StepIdentifiable, Equatable {
 
+    
     // MARK: - Public Properties
 
     /// Represent the title of a specific step.
