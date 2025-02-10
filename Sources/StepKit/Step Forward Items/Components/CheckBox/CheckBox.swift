@@ -3,6 +3,7 @@ import SwiftUI
 /// Represent a single checkbox element.
 internal struct CheckBox: View {
     public var title: String = "Mark as completed"
+    @State public var completed: Bool?
     public var whenCompleted: () -> Void
 
     private let uncheckedIcon = Image(systemName: "circle")

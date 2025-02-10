@@ -24,8 +24,6 @@ public struct Step: Codable, StepIdentifiable, Equatable {
     /// By default `action` value is setted to `.button()`.
     public var action: StepAction = .button()
 
-    public var completed: Bool?
-
     // MARK: - Initialization Method
     /// Create a new instance of Step.
     /// - Parameters:
@@ -38,7 +36,6 @@ public struct Step: Codable, StepIdentifiable, Equatable {
         self.subtitle = subtitle
         self.description = description
         self.action = action
-        self.completed = action.completed
     }
 
     public init(from decoder: any Decoder) throws {
@@ -49,7 +46,6 @@ public struct Step: Codable, StepIdentifiable, Equatable {
 
         let action = try container.decode(StepAction.self, forKey: .action)
         self.action = action
-        self.completed = action.completed
     }
 
     enum CodingKeys: String, CodingKey {
@@ -57,7 +53,6 @@ public struct Step: Codable, StepIdentifiable, Equatable {
         case subtitle
         case description
         case action
-        case completed
     }
 
     // MARK: - Public Method

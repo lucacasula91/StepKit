@@ -11,7 +11,7 @@ internal struct StepView: View {
     init(model: Step) {
         self.model = model
 
-        let completed = self.model.completed ?? false
+        let completed = self.model.action.completed
         self.isCompleted = completed
 
         if completed {
@@ -81,12 +81,30 @@ struct StepView_Previews: PreviewProvider {
   "description": "Take 200 cl. of milk.",
   "action": {
     "button": {
-      "title": "Next"
+      "title": "Next",
+      "completed": true
     }
   }
 }
 """
         let stepModel = try! JSONDecoder().decode(Step.self, from: jsonString1.data(using: .utf8)!)
+
+
+
+        let jsonString13 = """
+{
+  "title": "Prepare your ingredients",
+  "description": "Take 200 cl. of milk.",
+  "action": {
+    "checkBox": {
+      "title": "Mark as completed",
+      "completed": false
+    }
+  }
+}
+"""
+        let stepModel33 = try! JSONDecoder().decode(Step.self, from: jsonString13.data(using: .utf8)!)
+
 
         let jsonString2 = """
 {
@@ -107,8 +125,6 @@ struct StepView_Previews: PreviewProvider {
         let stepModel2 = try! JSONDecoder().decode(Step.self, from: jsonString2.data(using: .utf8)!)
 
 
-
-
         let model2 = Step(title: "Step 1",
                           subtitle: "Add all powder ingredients",
                           description: "In a bowl put the flour, the salt and the yeast.\nYou can use dry or instant yeast.",
@@ -116,17 +132,12 @@ struct StepView_Previews: PreviewProvider {
 
         let currentStepHolder = CurrentStepHolder()
 
-
-        VStack {
-            StepView(model: stepModel)
-            StepView(model: stepModel2)
-            StepView(model: model2)
-        }
+        StepFlowView(steps: [stepModel, stepModel33, stepModel2, model2])
         .environmentObject(currentStepHolder)
         .onAppear {
 
-            let ids: [String] = [stepModel, stepModel2, model2].filter { step in
-                return step.completed == false
+            let ids: [String] = [stepModel, stepModel33, stepModel2, model2].filter { step in
+                return step.action.completed == false
             }.map { $0.id }
             currentStepHolder.currentStep = ids
         }

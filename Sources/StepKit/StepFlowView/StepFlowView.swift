@@ -14,28 +14,6 @@ public struct StepFlowView: View {
         self.injectProxyAppearance()
     }
 
-    public init(steps: [Step], userDefaults: UserDefaults) {
-
-        var output = [Step]()
-
-        for step in steps {
-            let isCompleted = userDefaults.bool(forKey: step.id)
-
-            var stepAction = step.action
-            stepAction.completed = isCompleted
-
-            let newStep = Step(title: step.title,
-                               subtitle: step.subtitle,
-                               description: step.description, action: stepAction)
-            output.append(newStep)
-
-        }
-
-        self.steps = output
-        self.injectProxyAppearance()
-
-    }
-
     public init(data: Data) throws {
         do {
             let steps = try JSONDecoder().decode([Step].self, from: data)
@@ -54,12 +32,8 @@ public struct StepFlowView: View {
                 Spacer(minLength: 20)
             }
         }
-        .task {
-            let stepsToHold = steps
-                .filter({ $0.completed == false || $0.completed == nil })
-                .compactMap { $0.id }
-
-            self.currentStepHolder.currentStep = stepsToHold
+        .onAppear() {
+            self.populateCurrentStepHolder(for: self.steps)
         }
         .environmentObject(currentStepHolder)
     }
@@ -80,8 +54,15 @@ public struct StepFlowView: View {
                                             
                 CTFontManagerRegisterFontsForURL(fontURL! as CFURL, .process, nil)
             }
-            
         }
+    }
+
+    private func populateCurrentStepHolder(for steps: [Step]) {
+        let stepsToHold = steps
+            .filter({ $0.action.completed == false })
+            .compactMap { $0.id }
+
+        self.currentStepHolder.currentStep = stepsToHold
     }
 }
 
@@ -90,13 +71,13 @@ struct StepFlowView_Previews: PreviewProvider {
         
         let step1 = Step(title: "Add all powder ingredients",
                          description: "In a bowl put the flour, the salt and the yeast. You can use dry or instant yeast.\n\nMix all the powdered ingredients.",
-                         action: .button())
+                         action: .button(completed: true))
 
         let step2 = Step(title: "Step 2",
                          subtitle: "Add all liquid ingredients",
                          description: "Now add the 2 cups of milk and a table spoon of lemon juice.",
-                         action: .checkBox(title: "Mark as completed"))
-        
+                         action: .checkBox(title: "Mark as completed", completed: false))
+
         let step3 = Step(title: "Step 3",
                          subtitle: "Bake on",
                          description: "Put the cake in the oven with a temperature of 180° degrees for about 35 minutes.",

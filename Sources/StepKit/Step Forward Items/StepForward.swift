@@ -15,13 +15,13 @@ internal struct StepForward: View {
                 }
             }
             
-        case .checkBox(let title):
-            CheckBox(title: title, whenCompleted: {
+        case .checkBox(let title, let completed, _):
+            CheckBox(title: title, completed: completed) {
                 withAnimation {
                     onCompletion()
                 }
-            })
-            
+            }
+
         case .checkBoxGroup(let items):
             CheckBoxGroup(items: items, whenCompleted: {
                 withAnimation {
