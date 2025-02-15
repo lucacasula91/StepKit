@@ -9,25 +9,28 @@ internal struct CheckBoxGroup: View {
     }
     
     // MARK: - Private Properties
-    @State private var completedItems: [UUID] = []
-    private var items: [IdentifiableString]
-    
+    @State private var completedItems: [CheckBoxItem] = []
+    private var items: [CheckBoxItem]
+
     // MARK: - Public Properties
     public var whenCompleted: () -> Void
 
     // MARK: - Initialization Method
-    init(items: [String] = ["Mark as completed"], whenCompleted: @escaping () -> Void) {
-        self.items = items.map { IdentifiableString(text: $0) }
+    init(items: [CheckBoxItem] = [CheckBoxItem(title: "Mark as completed")], whenCompleted: @escaping () -> Void) {
+        self.items = items
         self.whenCompleted = whenCompleted
     }
     
     var body: some View {
         VStack(alignment: .trailing) {
-            ForEach(self.items, id: \.id) { item in
-                CheckBox(title: item.text, whenCompleted: {
-                    completedItems.append(item.id)
-                    
-                    if completedItems.count == items.count {
+
+            ForEach(self.items, id: \.title) { item in
+
+                CheckBox(title: item.title, completed: item.completed ?? false, whenCompleted: {
+                    completedItems.append(item)
+
+                    let allItemsCompleted = completedItems.count == items.count
+                    if allItemsCompleted {
                         whenCompleted()
                     }
                 })
@@ -36,11 +39,19 @@ internal struct CheckBoxGroup: View {
         .padding(12)
         .background(Material.thin)
         .cornerRadius(8)
+        .onAppear() {
+            self.completedItems = items.filter { ($0.completed ?? false) == true }
+        }
     }
 }
 
 struct CheckBoxGroup_Previews: PreviewProvider {
     static var previews: some View {
-        CheckBoxGroup(items: ["First item", "Second item", "Third item"]) { }
+
+        let item1 = CheckBoxItem(title: "First item", completed: true)
+        let item2 = CheckBoxItem(title: "Second item", completed: false)
+        let item3 = CheckBoxItem(title: "Third item", completed: false)
+
+        CheckBoxGroup(items: [item1, item2, item3]) { }
     }
 }

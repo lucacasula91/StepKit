@@ -3,30 +3,29 @@ import SwiftUI
 /// Represent a single checkbox element.
 internal struct CheckBox: View {
     public var title: String = "Mark as completed"
-    @State public var completed: Bool?
+    @State public var completed: Bool = false
     public var whenCompleted: () -> Void
 
     private let uncheckedIcon = Image(systemName: "circle")
     private let checkedIcon = Image(systemName: "checkmark.circle.fill")
 
-    @State var isChecked: Bool = false
-    
+
     var body: some View {
         HStack {
             
             Text(title)
                 .foregroundColor(.primary)
-                .strikethrough(isChecked)
+                .strikethrough(completed)
                 .proxyFont(.body, bold: true)
 
             Button(action: {
-                self.isChecked.toggle()
-                if isChecked {
+                self.completed.toggle()
+                if completed {
                     whenCompleted()
                 }
             }) {
 
-                if isChecked {
+                if completed {
                     checkedIcon
                         .resizable()
                         .frame(width: 30, height: 30)
@@ -37,7 +36,7 @@ internal struct CheckBox: View {
                 }
             }
             .frame(width: 44, height: 44)
-            .disabled(isChecked)
+            .disabled(completed)
         }
     }
 }

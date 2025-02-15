@@ -15,8 +15,8 @@ internal struct StepForward: View {
                 }
             }
             
-        case .checkBox(let title, let completed, _):
-            CheckBox(title: title, completed: completed) {
+        case .checkBox(let item):
+            CheckBox(title: item.title, completed: item.completed ?? false) {
                 withAnimation {
                     onCompletion()
                 }
@@ -52,9 +52,9 @@ struct StepForward_Previews: PreviewProvider {
         VStack {
             StepForward(type: .button()) { }
             
-            StepForward(type: .checkBox(title: "Single task")) { }
-            StepForward(type: .checkBoxGroup(items: ["First item group", "Seconds item group"])) { }
-            
+            StepForward(type: .checkBox(item: CheckBoxItem(title: "First item"))) { }
+            StepForward(type: .checkBoxGroup(items: [CheckBoxItem(title: "First item"), CheckBoxItem(title: "Second item item")])) { }
+
             StepForward(type: .timer(seconds: 3)) { }
             
             StepForward(type: .stepper(total: 7, title: "Rounds")) { }

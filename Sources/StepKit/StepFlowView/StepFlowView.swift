@@ -76,21 +76,21 @@ struct StepFlowView_Previews: PreviewProvider {
         let step2 = Step(title: "Step 2",
                          subtitle: "Add all liquid ingredients",
                          description: "Now add the 2 cups of milk and a table spoon of lemon juice.",
-                         action: .checkBox(title: "Mark as completed", completed: false))
+                         action: .checkBox(item: CheckBoxItem(title: "Mark as completed", completed: false)))
 
         let step3 = Step(title: "Step 3",
                          subtitle: "Bake on",
                          description: "Put the cake in the oven with a temperature of 180° degrees for about 35 minutes.",
-                         action: .timer(seconds: 10))
-        
+                         action: .timer(seconds: 2))
+
         let step4 = Step(title: "Step 4",
                          subtitle: "Set in plate",
                          description: "Put the cake in a plate and add some powdered sugar on top.",
-                         action: .checkBoxGroup(items: ["Plate the cake", "Add powdered sugar on top"]))
-        
+                         action: .checkBoxGroup(items: [CheckBoxItem(title: "Plate the cake", completed: false), CheckBoxItem(title: "Add powder sugar on top", completed: true)]))
+
         ScrollView(showsIndicators: true) {
             VStack(spacing: 16) {
-                StepFlowView(steps: [step1, step2, step3, step4])
+                StepFlowView(steps: [step1, step2, step4, step3])
             }
             .padding()
         }

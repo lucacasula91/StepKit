@@ -1,20 +1,32 @@
 import SwiftUI
 
+public struct CheckBoxItem: Codable {
+    var title: String
+    var completed: Bool?
+    var identifier: String?
+
+    public init(title: String, completed: Bool? = nil, identifier: String? = nil) {
+        self.title = title
+        self.completed = completed
+        self.identifier = identifier
+    }
+}
+
+
 /// Specify the behavior that guide the step forward flow.
 public enum StepAction: Codable, StepIdentifiable {
 
     case button(title: String = "Next", completed: Bool? = nil, identifier: String? = nil)
 
-
-    case checkBox(title: String = "Mark as completed", completed: Bool? = nil, identifier: String? = nil)
+    case checkBox(item: CheckBoxItem = CheckBoxItem(title: "Mark as completed"))
 
     /// Group of CheckBox buttons that allow to mark a step as completed once each checkbox has been flagged.
     ///
     /// You can specify multiple items by populating the `items` property with a String array. Each element of the array it's rendered as single CheckBox element.
     ///
     /// - parameter items: Array of String that represent each checkbox to present.
-    case checkBoxGroup(items: [String])
-    
+    case checkBoxGroup(items: [CheckBoxItem])
+
     /// Timer specified in second that allow to make a step forward once the countdown is completed.
     ///
     /// Once the count down is completed the text **Completed** is shown instead of the counter. If TimerNotification object has been specified user can get a LocalNotification once the count down is completed.
@@ -38,8 +50,12 @@ public enum StepAction: Codable, StepIdentifiable {
             case .button(_, let completed, _):
                 return completed ?? false
 
-            case .checkBox(_, let completed, _):
-                return completed ?? false
+            case .checkBox(let item):
+                return item.completed ?? false
+
+            case .checkBoxGroup(let items):
+                let itemsCompleted = items.map { $0.completed ?? false }
+                return itemsCompleted.contains(false) == false
 
             default:
                 return false
@@ -58,13 +74,13 @@ public enum StepAction: Codable, StepIdentifiable {
             let stepIdentifier = StepIdentifierProvider(elements: "button", identifier).stepIdentifier
             return stepIdentifier
 
-        case .checkBox(_, _, let identifier):
-            let stepIdentifier = StepIdentifierProvider(elements: "checkBox", identifier).stepIdentifier
+        case .checkBox(let item):
+            let stepIdentifier = StepIdentifierProvider(elements: "checkBox", item.identifier).stepIdentifier
             return stepIdentifier
 
         case .checkBoxGroup(let items):
-            let stepIdentifier = StepIdentifierProvider(elements: "checkBoxGroup", items.joined()).stepIdentifier
-            return stepIdentifier
+           // let stepIdentifier = StepIdentifierProvider(elements: "checkBoxGroup", items.joined()).stepIdentifier
+            return "stepIdentifier"
 
         case .timer(let seconds, let notification):
             let stepIdentifier = StepIdentifierProvider(elements: "timer", "\(seconds)", notification?.id ?? "").stepIdentifier
