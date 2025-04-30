@@ -20,21 +20,10 @@ public enum StepAction: Codable, StepIdentifiable {
 
     case checkBox(item: CheckBoxItem = CheckBoxItem(title: "Mark as completed"))
 
-    /// Group of CheckBox buttons that allow to mark a step as completed once each checkbox has been flagged.
-    ///
-    /// You can specify multiple items by populating the `items` property with a String array. Each element of the array it's rendered as single CheckBox element.
-    ///
-    /// - parameter items: Array of String that represent each checkbox to present.
     case checkBoxGroup(items: [CheckBoxItem])
 
-    /// Timer specified in second that allow to make a step forward once the countdown is completed.
-    ///
-    /// Once the count down is completed the text **Completed** is shown instead of the counter. If TimerNotification object has been specified user can get a LocalNotification once the count down is completed.
-    ///
-    /// - parameter seconds: Amount of seconds specified in TimeInterval object.
-    /// - parameter notification: Model that represent the notification content that should be prompted once the count down is completed.
-    case timer(seconds: TimeInterval, notification: TimerNotification? = nil)
-    
+    case timer(seconds: TimeInterval, completedSeconds: TimeInterval? = nil, identifier: String? = nil,  notification: TimerNotification? = nil)
+
     /// Stepper counter that allow to track repetitions in order to mark a step as completed.
     ///
     /// By default `title` property is setted to **Repetitions** string.
@@ -56,6 +45,9 @@ public enum StepAction: Codable, StepIdentifiable {
             case .checkBoxGroup(let items):
                 let itemsCompleted = items.map { $0.completed ?? false }
                 return itemsCompleted.contains(false) == false
+
+            case .timer(let seconds, let completedSeconds, _, _):
+                return seconds == (completedSeconds ?? 0)
 
             default:
                 return false
@@ -79,11 +71,12 @@ public enum StepAction: Codable, StepIdentifiable {
             return stepIdentifier
 
         case .checkBoxGroup(let items):
-           // let stepIdentifier = StepIdentifierProvider(elements: "checkBoxGroup", items.joined()).stepIdentifier
-            return "stepIdentifier"
+            let identifier = (items.map {$0.identifier ?? $0.title}).joined(separator: "_")
+            let stepIdentifier = StepIdentifierProvider(elements: "checkBoxGroup", identifier).stepIdentifier
+            return stepIdentifier
 
-        case .timer(let seconds, let notification):
-            let stepIdentifier = StepIdentifierProvider(elements: "timer", "\(seconds)", notification?.id ?? "").stepIdentifier
+        case .timer(let seconds, _, let identifier, _):
+            let stepIdentifier = StepIdentifierProvider(elements: "timer", identifier ?? "\(seconds)").stepIdentifier
             return stepIdentifier
 
         case .stepper(let total, let title):

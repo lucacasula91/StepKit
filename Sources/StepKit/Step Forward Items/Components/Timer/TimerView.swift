@@ -9,9 +9,20 @@ internal struct TimerView: View {
     // MARK: - Public Properties
     @Environment(\.scenePhase) var scenePhase
     @State public var seconds: TimeInterval
+    @State public var completedSeconds: TimeInterval
+    public var identifier: String?
     public var notificationRequest: UNNotificationRequest?
     public var whenCompleted: () -> Void
-    
+
+    init(seconds: TimeInterval, completedSeconds: TimeInterval = 0, identifier: String? = nil, notificationRequest: UNNotificationRequest? = nil, whenCompleted: @escaping () -> Void) {
+
+        self.seconds = seconds - completedSeconds
+        self.completedSeconds = completedSeconds
+        self.notificationRequest = notificationRequest
+        self.whenCompleted = whenCompleted
+
+    }
+
     // MARK: - Private Properties
     @State private var isTimerActive: Bool = false
     @State private var canBeFired: Bool = true
@@ -117,6 +128,7 @@ internal struct TimerView: View {
 
 struct TimerView_Previews: PreviewProvider {
     static var previews: some View {
-        TimerView(seconds: 5, notificationRequest: nil) { }
+
+        TimerView(seconds: 5, completedSeconds: 2, identifier: nil,  notificationRequest: nil) { }
     }
 }

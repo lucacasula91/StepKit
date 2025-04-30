@@ -81,7 +81,7 @@ struct StepFlowView_Previews: PreviewProvider {
         let step3 = Step(title: "Step 3",
                          subtitle: "Bake on",
                          description: "Put the cake in the oven with a temperature of 180° degrees for about 35 minutes.",
-                         action: .timer(seconds: 2))
+                         action: .timer(seconds: 25, completedSeconds: 22))
 
         let step4 = Step(title: "Step 4",
                          subtitle: "Set in plate",

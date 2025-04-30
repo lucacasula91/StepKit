@@ -29,10 +29,10 @@ internal struct StepForward: View {
                 }
             })
             
-        case .timer(let seconds, let timerNotification):
+        case .timer(let seconds, let completedSeconds, let identifier, let timerNotification):
             let request = NotificationGenerator().createNotificationRequest(from: timerNotification, with: seconds)
             
-            TimerView(seconds: seconds, notificationRequest: request) {
+            TimerView(seconds: seconds, completedSeconds: completedSeconds ?? 0, notificationRequest: request) {
                 withAnimation {
                     onCompletion()
                 }
