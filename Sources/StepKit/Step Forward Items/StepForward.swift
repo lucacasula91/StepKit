@@ -9,6 +9,7 @@ internal struct StepForward: View {
         
         switch type {
         case .button(let title, let completed, _):
+
             ButtonAction(title: title, completed: completed) {
                 withAnimation {
                     onCompletion()
@@ -37,7 +38,11 @@ internal struct StepForward: View {
                     onCompletion()
                 }
             }
-        
+            
+        case .customTimer(let identifier, let notification):
+            Text("")
+            
+
         case .stepper(let total, let title):
             StepperAction(total: total, title: title, whenCompleted: {
                 withAnimation {
@@ -47,17 +52,5 @@ internal struct StepForward: View {
         }
     }
 }
-struct StepForward_Previews: PreviewProvider {
-    static var previews: some View {
-        VStack {
-            StepForward(type: .button()) { }
-            
-            StepForward(type: .checkBox(item: CheckBoxItem(title: "First item"))) { }
-            StepForward(type: .checkBoxGroup(items: [CheckBoxItem(title: "First item"), CheckBoxItem(title: "Second item item")])) { }
 
-            StepForward(type: .timer(seconds: 3)) { }
-            
-            StepForward(type: .stepper(total: 7, title: "Rounds")) { }
-        }
-    }
-}
+

@@ -22,7 +22,9 @@ public enum StepAction: Codable, StepIdentifiable {
 
     case checkBoxGroup(items: [CheckBoxItem])
 
-    case timer(seconds: TimeInterval, completedSeconds: TimeInterval? = nil, identifier: String? = nil,  notification: TimerNotification? = nil)
+    case timer(seconds: TimeInterval, completedSeconds: TimeInterval? = nil, identifier: String? = nil, notification: TimerNotification? = nil)
+
+    case customTimer(identifier: String? = nil, notification: TimerNotification? = nil)
 
     /// Stepper counter that allow to track repetitions in order to mark a step as completed.
     ///
@@ -77,6 +79,10 @@ public enum StepAction: Codable, StepIdentifiable {
 
         case .timer(let seconds, _, let identifier, _):
             let stepIdentifier = StepIdentifierProvider(elements: "timer", identifier ?? "\(seconds)").stepIdentifier
+            return stepIdentifier
+            
+        case .customTimer(let identifier, _):
+            let stepIdentifier = StepIdentifierProvider(elements: "custom_timer", identifier ?? "\(UUID().uuidString)").stepIdentifier
             return stepIdentifier
 
         case .stepper(let total, let title):
