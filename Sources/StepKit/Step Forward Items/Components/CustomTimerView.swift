@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct CustomTimerView: View {
-
+    
     // MARK: - Properties
     var timerName: String
     var onCompletion: () -> Void
@@ -17,25 +17,68 @@ struct CustomTimerView: View {
         self.timerName = timerName
         onCompletion = completion
     }
-
+    
     @Namespace var namespaceAnimation
-
+    
     @State private var timerSeconds: CGFloat = 0
     @State private var completedSeconds: TimeInterval = 0
     @State private var timerHasBeenSetted: Bool = false
-
+    
     @State private var isTimerActive = false
     @State private var canBeFired = true
     @State private var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     @State private var backgroundDate: Date?
     @State private var componentWidth: CGFloat = .infinity
-
+    
     @Environment(\.scenePhase) var scenePhase
     @Environment(\.sizeCategory) var sizeCategory
-
+    private var selectionFeedback: UISelectionFeedbackGenerator = UISelectionFeedbackGenerator()
     // MARK: - Body
     var body: some View {
         VStack(alignment: .trailing) {
+            
+            HStack(alignment: .center) {
+                VStack(alignment: .trailing) {
+                    Text(timerName)
+                        .proxyFont(.body, bold: true)
+                        .matchedGeometryEffect(id: "TimerNameLabel", in: namespaceAnimation)
+                    
+                    if #available(iOS 16.6, *) {
+                        timerLabel
+                            .contentTransition(.interpolate)
+                    } else {
+                        timerLabel
+                    }
+                }
+                
+                Button {
+                    withAnimation(.bouncy) {
+                        if isTimerActive {
+                            timer.upstream.connect().cancel()
+                            removeScheduledNotification()
+                        } else {
+                            timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+                            scheduleNotification()
+                            if timerHasBeenSetted == false {
+                                timerHasBeenSetted.toggle()
+                            }
+                        }
+                        
+                        withAnimation() {
+                            isTimerActive.toggle()
+                        }
+                    }
+                } label: {
+                    Image(systemName: isTimerActive ? "pause.fill" : "play.fill")
+                        .foregroundColor(Color.white)
+                        .padding(20)
+                        .background(canBeFired ? Color.accentColor : Color.gray )
+                        .clipShape(Circle())
+                }
+                .padding(.leading, 8)
+                .disabled(canBeFired == false || timerSeconds == 0)
+                .fixedSize()
+            }
             
             if timerHasBeenSetted == false {
                 GeometryReader { geometry in
@@ -50,59 +93,24 @@ struct CustomTimerView: View {
                     )
                     .clipShape(RoundedRectangle(cornerRadius: 8))
                     .frame(height: size.height)
+                    //                    .overlay(alignment: .topLeading) {
+                    //                        if timerHasBeenSetted == false {
+                    //                            Text("Timer")
+                    //                                .proxyFont(.callout, bold: true)
+                    //                                .matchedGeometryEffect(id: "TimerNameLabel", in: namespaceAnimation)
+                    //                                .padding(EdgeInsets(top: 4, leading: 12, bottom: 0, trailing: 0))
+                    //                        }
+                    //                    }
                 }
                 .frame(height: sizeCategory.isAccessibilityCategory ? 120 : 70)
-                .transition(.opacity.combined(with: .move(edge: .trailing)))
-            }
-
-                HStack {
-                    VStack(alignment: .trailing) {
-                        Text(timerName)
-                            .proxyFont(.body, bold: true)
-
-                        if #available(iOS 16.6, *) {
-                            timerLabel
-                                .contentTransition(.numericText())
-                            
-                        } else {
-                            timerLabel
-                        }
-                    }
-                    
-                    Button {
-                        withAnimation(.bouncy) {
-                            if isTimerActive {
-                                timer.upstream.connect().cancel()
-                                removeScheduledNotification()
-                            } else {
-                                timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-                                scheduleNotification()
-                                if timerHasBeenSetted == false {
-                                    timerHasBeenSetted.toggle()
-                                }
-                            }
-
-                            withAnimation() {
-                                isTimerActive.toggle()
-                            }
-                        }
-                    } label: {
-                        Image(systemName: isTimerActive ? "pause.fill" : "play.fill")
-                            .foregroundColor(Color.white)
-                            .padding(20)
-                            .background(canBeFired ? Color.accentColor : Color.gray )
-                            .clipShape(Circle())
-                    }
-                    .padding(.leading, 8)
-                    .disabled(canBeFired == false)
-                    .fixedSize()
-                
+                .transition(.scale.combined(with: .move(edge: .top).combined(with: .opacity)))
             }
         }
-        
-
+        .onAppear {
+            selectionFeedback.prepare()
+        }
     }
-
+    
     private var timerLabel: some View {
         Text(descriptiveTimeRangeFrom(seconds: timerSeconds))
             .proxyFont(.title3, bold: true)
@@ -138,31 +146,43 @@ struct CustomTimerView: View {
             break
         }
     }
-
+    
+    @State var lastValue: Int = 0
     private func handleScrollOffsetChange(_ newOffset: CGFloat) {
-        guard newOffset >= 0 else {
+        guard
+            newOffset >= 0
+        else {
             timerSeconds = 0
             return
         }
-
+        
         let convertedOffset = newOffset / 50
+        
+        guard Int(newOffset / 5) != lastValue
+        else { return }
+        
+        lastValue = Int(newOffset / 5)
+        
+        selectionFeedback.selectionChanged()
+        selectionFeedback.prepare()
+        
         withAnimation() {
             timerSeconds = convertedOffset * 60
         }
     }
-
+    
     private func descriptiveTimeRangeFrom(seconds: Double) -> String {
         let formatter = DateComponentsFormatter()
         formatter.allowedUnits = [.hour, .minute, .second]
         formatter.unitsStyle = .abbreviated
-
+        
         if let formattedString = formatter.string(from: seconds) {
             return formattedString
         } else {
             return "0s"
         }
     }
-
+    
     private func scheduleNotification() {
         //        guard let request = notificationRequest else { return }
         //
@@ -173,7 +193,7 @@ struct CustomTimerView: View {
         //        let notificationRequest = UNNotificationRequest(identifier: request.identifier, content: request.content, trigger: trigger)
         //        UNUserNotificationCenter.current().add(notificationRequest)
     }
-
+    
     private func removeScheduledNotification() {
         //        guard let requestIdentifier = notificationRequest?.identifier else { return }
         //
@@ -188,67 +208,67 @@ struct ScrollableTimerView: View {
     let horizontalPadding: CGFloat
     let height: CGFloat
     let onOffsetChange: (CGFloat) -> Void
-
+    
     struct ViewOffsetKey: PreferenceKey {
         static var defaultValue: CGFloat = 0
         static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
             value += nextValue()
         }
     }
-
+    
     var body: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 5) {
-                let totalSteps = steps * 60 + 1
-
-                ForEach(0..<totalSteps, id: \.self) { index in
-                    let isMajorTick = index % steps == 0
-
-                    Divider()
-                        .background(isMajorTick ? Color.primary : .gray)
-                        .frame(width: 0, height: isMajorTick ? 20 : 10)
-                        .overlay(alignment: .top) {
-                            if isMajorTick {
-                                Text("\(index / steps)")
-                                    .proxyFont(.body, bold: true)
-                                    .offset(y: 24)
-                                    .fixedSize()
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 5) {
+                    let totalSteps = steps * 60 + 1
+                    
+                    ForEach(0..<totalSteps, id: \.self) { index in
+                        let isMajorTick = index % steps == 0
+                        
+                        Divider()
+                            .foregroundStyle(.red)
+                            .background(isMajorTick ? Color.black : .gray)
+                            .frame(width: 0, height: isMajorTick ? 20 : 10)
+                            .overlay(alignment: .top) {
+                                if isMajorTick {
+                                    Text("\(index / steps)")
+                                        .proxyFont(.body, bold: true)
+                                        .offset(y: 22)
+                                        .fixedSize()
+                                }
                             }
-                        }
+                    }
                 }
+                .frame(height: height)
+                .padding(.horizontal, horizontalPadding)
+                .background(
+                    GeometryReader {
+                        Color.clear.preference(key: ViewOffsetKey.self,
+                                               value: -$0.frame(in: .named("scroll")).origin.x)
+                    }
+                )
+                .onPreferenceChange(ViewOffsetKey.self, perform: onOffsetChange)
             }
-            .frame(height: height)
-            .padding(.horizontal, horizontalPadding)
-            .background(
-                GeometryReader {
-                    Color.clear.preference(key: ViewOffsetKey.self,
-                                           value: -$0.frame(in: .named("scroll")).origin.x)
-                }
+            .mask(
+                LinearGradient(colors: [.black.opacity(0), .black, .black.opacity(0)],
+                               startPoint: .leading, endPoint: .trailing)
+                .padding(.horizontal, 30)
             )
-            .onPreferenceChange(ViewOffsetKey.self, perform: onOffsetChange)
-        }
-        .mask(
-            LinearGradient(colors: [.black.opacity(0), .black, .black.opacity(0)],
-                           startPoint: .leading, endPoint: .trailing)
-            .padding(.horizontal, 30)
-        )
-        .overlay {
-            Image(systemName: "arrowtriangle.down.fill")
-                .resizable()
-                .frame(width: 12, height: 12)
-                .offset(y: -22)
-        }
-        .coordinateSpace(name: "scroll")
-        .background(.regularMaterial)
-        .clipShape(RoundedRectangle(cornerRadius: 8))
+            .overlay {
+                Image(systemName: "arrowtriangle.down.fill")
+                    .resizable()
+                    .frame(width: 12, height: 12)
+                    .offset(y: -22)
+            }
+            .coordinateSpace(name: "scroll")
+            .background(Color.gray.opacity(0.05))
+            .clipShape(RoundedRectangle(cornerRadius: 8))
+        
     }
 }
-
-
 
 // MARK: - Preview
 @available(iOS 17.0, *)
 #Preview {
     CustomTimerView(timerName: "Timer pasta") {}
-
+    
 }
