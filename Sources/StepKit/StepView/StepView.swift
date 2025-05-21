@@ -41,7 +41,7 @@ internal struct StepView: View {
 
                 if isCompleted == false {
                     HStack {
-                        Spacer()
+                        Spacer(minLength: 1)
                         StepForward(type: model.action) {
                             isExpanded.toggle()
                             isCompleted.toggle()
@@ -80,9 +80,8 @@ struct StepView_Previews: PreviewProvider {
   "title": "Prepare your ingredients",
   "description": "Take 200 cl. of milk.",
   "action": {
-    "button": {
-      "title": "Next",
-      "completed": true
+    "customTimer": {
+      "identifier": "Next"
     }
   }
 }
@@ -90,53 +89,13 @@ struct StepView_Previews: PreviewProvider {
         let stepModel = try! JSONDecoder().decode(Step.self, from: jsonString1.data(using: .utf8)!)
 
 
-
-        let jsonString13 = """
-{
-  "title": "Prepare your ingredients",
-  "description": "Take 200 cl. of milk.",
-  "action": {
-    "checkBox": {
-      "title": "Mark as completed",
-      "completed": false
-    }
-  }
-}
-"""
-        let stepModel33 = try! JSONDecoder().decode(Step.self, from: jsonString13.data(using: .utf8)!)
-
-
-        let jsonString2 = """
-{
-  "title": "Milk and yeast",
-  "description": "Heat the milk until it is warm but not hot, about 90 degrees.\\nIn a large bowl, combine it with the yeast. Stir lightly, and let sit until the mixture is foamy, about 5 minutes.",
-  "action": {
-    "timer": {
-      "seconds": 3,
-      "notification": {
-        "title": "Step 1 completed",
-        "subtitle": "Let's jump to the next step"
-      }
-    }
-  
-  }
-}
-"""
-        let stepModel2 = try! JSONDecoder().decode(Step.self, from: jsonString2.data(using: .utf8)!)
-
-
-        let model2 = Step(title: "Step 1",
-                          subtitle: "Add all powder ingredients",
-                          description: "In a bowl put the flour, the salt and the yeast.\nYou can use dry or instant yeast.",
-                          action: .timer(seconds: 2))
-
         let currentStepHolder = CurrentStepHolder()
 
-        StepFlowView(steps: [stepModel, stepModel33, stepModel2, model2])
+        StepFlowView(steps: [stepModel])
         .environmentObject(currentStepHolder)
         .onAppear {
 
-            let ids: [String] = [stepModel, stepModel33, stepModel2, model2].filter { step in
+            let ids: [String] = [stepModel].filter { step in
                 return step.action.completed == false
             }.map { $0.id }
             currentStepHolder.currentStep = ids
